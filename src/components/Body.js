@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
 
 const Body = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -17,8 +18,14 @@ const Body = () => {
         "https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.4749252&lng=73.9374517&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
       );
       const data = await response.json();
-      setRestaurants(data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-      setFilterenRestaurests(data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+      setRestaurants(
+        data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants
+      );
+      setFilterenRestaurests(
+        data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants
+      );
     } catch (error) {
       console.error(error);
     }
@@ -32,11 +39,11 @@ const Body = () => {
   };
 
   const handleSearch = () => {
-    const filterenRes = restaurants.filter(
-      (res) => res.info.name.toLowerCase().includes(searchText.toLowerCase())
+    const filterenRes = restaurants.filter((res) =>
+      res.info.name.toLowerCase().includes(searchText.toLowerCase())
     );
     setFilterenRestaurests(filterenRes);
-  }
+  };
 
   if (restaurants.length === 0) {
     return <Shimmer />;
@@ -46,16 +53,13 @@ const Body = () => {
     <div className="body">
       <div className="filter">
         <div className="search">
-          <input 
-            type="text" 
-            className="search-box" 
-            value={searchText} 
-            onChange={(e) => setSearchText(e.target.value)}  
+          <input
+            type="text"
+            className="search-box"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
           />
-          <button 
-            className="search-btn"
-            onClick={handleSearch}
-          >
+          <button className="search-btn" onClick={handleSearch}>
             Search
           </button>
         </div>
@@ -64,16 +68,21 @@ const Body = () => {
         </button>
       </div>
       <div className="res-container">
-        {filterenRestaurests.map((data) => (
-          <RestaurantCard
-            key={data.info.id}
-            name={data.info.name}
-            imgId={data.info.cloudinaryImageId}
-            cuisines={data.info.cuisines}
-            rating={data.info.avgRating}
-            cost={data.info.costForTwo}
-            time={data.info.sla.deliveryTime}
-          />
+        {filterenRestaurests && filterenRestaurests.map((data) => (
+          <Link 
+            key={data.info.id} 
+            to={"/restaurant/" + data.info.id}
+            className="restaurant-link"
+          >
+            <RestaurantCard
+              name={data.info.name}
+              imgId={data.info.cloudinaryImageId}
+              cuisines={data.info.cuisines}
+              rating={data.info.avgRating}
+              cost={data.info.costForTwo}
+              time={data.info.sla.deliveryTime}
+            />
+          </Link>
         ))}
       </div>
     </div>
