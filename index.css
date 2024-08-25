@@ -109,3 +109,8 @@
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+.user-container {
+  padding: 15px;
+  border: 1px solid black;
+}
