@@ -17,4 +17,20 @@ const RestaurantCard = ({ name, imgId, cuisines, rating, cost, time }) => {
   );
 };
 
+// higher order function -> takes component as a 
+// input and returns modified component as output
+
+export const withVegRestaurantCard = (RestaurantCard) => {
+  return (props) => {
+    return (
+      <div>
+        <label className="absolute text-green-700 font-semibold text-sm bg-teal-100 p-1 rounded-md m-1">
+          Pure Veg
+        </label>
+        <RestaurantCard {...props} />
+      </div>
+    );
+  };
+};
+
 export default RestaurantCard;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, { withVegRestaurantCard } from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import { RES_API } from "../utils/constants";
@@ -45,6 +45,7 @@ const Body = () => {
     setFilterenRestaurests(filterenRes);
   };
 
+  const RestaurantCardWithVeg = withVegRestaurantCard(RestaurantCard);
   const onlineStatus = useOnlineStatus();
 
   if (onlineStatus === false) {
@@ -66,32 +67,47 @@ const Body = () => {
             placeholder="Search Restaurants..."
             onChange={(e) => setSearchText(e.target.value)}
           />
-          <button className="py-1 px-2 bg-cyan-300 rounded-md hover:bg-cyan-400" onClick={handleSearch}>
+          <button
+            className="py-1 px-2 bg-cyan-300 rounded-md hover:bg-cyan-400"
+            onClick={handleSearch}
+          >
             Search
           </button>
         </div>
-        <button className="py-1 px-3 bg-purple-300 rounded-md hover:bg-purple-400" onClick={handleFilter}>
+        <button
+          className="py-1 px-3 bg-purple-300 rounded-md hover:bg-purple-400"
+          onClick={handleFilter}
+        >
           Top Rated Restaurants
         </button>
       </div>
       <div className="flex flex-wrap">
-        {filterenRestaurests && filterenRestaurests.map((data) => (
-          <div>
-            <Link 
-              key={data.info.id} 
-              to={"/restaurant/" + data.info.id}
-              >
-              <RestaurantCard
-                name={data.info.name}
-                imgId={data.info.cloudinaryImageId}
-                cuisines={data.info.cuisines}
-                rating={data.info.avgRating}
-                cost={data.info.costForTwo}
-                time={data.info.sla.deliveryTime}
-                />
-            </Link>
-          </div>
-        ))}
+        {filterenRestaurests &&
+          filterenRestaurests.map((data) => (
+            <div key={data.info.id}>
+              <Link to={"/restaurant/" + data.info.id}>
+                {data.info.veg ? (
+                  <RestaurantCardWithVeg
+                    name={data.info.name}
+                    imgId={data.info.cloudinaryImageId}
+                    cuisines={data.info.cuisines}
+                    rating={data.info.avgRating}
+                    cost={data.info.costForTwo}
+                    time={data.info.sla.deliveryTime}
+                  />
+                ) : (
+                  <RestaurantCard
+                    name={data.info.name}
+                    imgId={data.info.cloudinaryImageId}
+                    cuisines={data.info.cuisines}
+                    rating={data.info.avgRating}
+                    cost={data.info.costForTwo}
+                    time={data.info.sla.deliveryTime}
+                  />
+                )}
+              </Link>
+            </div>
+          ))}
       </div>
     </div>
   );
