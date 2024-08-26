@@ -10,13 +10,13 @@ const Header = () => {
     login === "Login" ? setLogin("Logout") : setLogin("Login");
   };
   return (
-    <div className="header">
-      <div className="nav-bar">
+    <div className="border border-black shadow-md">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div>
-          <img className="logo" src={LOGO_URL} alt="restaurent logo" />
+          <img className="w-32 h-28" src={LOGO_URL} alt="restaurent logo" />
         </div>
-        <div className="menu">
-          <ul className="menu-list">
+        <div className="">
+          <ul className="flex items-center space-x-8 text-md">
             <li>
               Online Status: {onlineStatus ? "✅" : "🔴"}
             </li>
@@ -30,7 +30,7 @@ const Header = () => {
               <Link to="/contact">Contact Us</Link>
             </li>
             <li>Cart</li>
-            <button className="login" onClick={handleLogin}>
+            <button className="w-20 px-4 py-2 bg-gray-300 rounded-md text-center hover:bg-gray-400" onClick={handleLogin}>
               {login}
             </button>
           </ul>

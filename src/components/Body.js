@@ -56,39 +56,41 @@ const Body = () => {
   }
 
   return (
-    <div className="body">
-      <div className="filter">
-        <div className="search">
+    <div className="p-2">
+      <div className="my-4 px-3 flex justify-between">
+        <div className="flex space-x-3">
           <input
             type="text"
-            className="search-box"
+            className="border border-gray-600 rounded-md p-1 "
             value={searchText}
+            placeholder="Search Restaurants..."
             onChange={(e) => setSearchText(e.target.value)}
           />
-          <button className="search-btn" onClick={handleSearch}>
+          <button className="py-1 px-2 bg-cyan-300 rounded-md hover:bg-cyan-400" onClick={handleSearch}>
             Search
           </button>
         </div>
-        <button className="filter-btn" onClick={handleFilter}>
+        <button className="py-1 px-3 bg-purple-300 rounded-md hover:bg-purple-400" onClick={handleFilter}>
           Top Rated Restaurants
         </button>
       </div>
-      <div className="res-container">
+      <div className="flex flex-wrap">
         {filterenRestaurests && filterenRestaurests.map((data) => (
-          <Link 
-            key={data.info.id} 
-            to={"/restaurant/" + data.info.id}
-            className="restaurant-link"
-          >
-            <RestaurantCard
-              name={data.info.name}
-              imgId={data.info.cloudinaryImageId}
-              cuisines={data.info.cuisines}
-              rating={data.info.avgRating}
-              cost={data.info.costForTwo}
-              time={data.info.sla.deliveryTime}
-            />
-          </Link>
+          <div>
+            <Link 
+              key={data.info.id} 
+              to={"/restaurant/" + data.info.id}
+              >
+              <RestaurantCard
+                name={data.info.name}
+                imgId={data.info.cloudinaryImageId}
+                cuisines={data.info.cuisines}
+                rating={data.info.avgRating}
+                cost={data.info.costForTwo}
+                time={data.info.sla.deliveryTime}
+                />
+            </Link>
+          </div>
         ))}
       </div>
     </div>

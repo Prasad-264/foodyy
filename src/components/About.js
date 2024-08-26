@@ -22,7 +22,7 @@ class About extends React.Component {
     // console.log(this.state.userData);    
     const {name, location, twitter_username, avatar_url} = this.state.userData;
     return (
-      <div className="about-container">
+      <div className="m-4 p-4">
         <h2>About Us</h2>
         <UserClass name={name} location={location} contact={twitter_username} avatarImg={avatar_url} />
       </div>
