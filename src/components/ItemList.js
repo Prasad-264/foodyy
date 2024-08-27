@@ -1,7 +1,13 @@
 import React from 'react';
 import { RES_LOGO } from '../utils/constants';
+import { useDispatch } from 'react-redux';
+import { addItem } from '../utils/cartSlice';
 
 const ItemList = ({ items }) => {
+  const dispatch = useDispatch();
+  const handleAddItem = (item) => {
+    dispatch(addItem(item));
+  }
   return (
     <div>
       {items.map((item) => (
@@ -13,7 +19,12 @@ const ItemList = ({ items }) => {
           </div>
           <div className="relative flex-shrink-0">
             <img className="h-28 w-28 rounded-md object-cover" src={RES_LOGO + item.card.info.imageId} />
-            <button className="absolute left-5 top-24 px-5 py-1 bg-white text-green-500 font-bold text-sm rounded-md shadow-md">ADD</button>
+            <button 
+              className="absolute left-5 top-24 px-5 py-1 bg-white text-green-500 font-bold text-sm rounded-md shadow-md"
+              onClick={() => handleAddItem(item)}
+            >
+              ADD
+            </button>
           </div>
         </div>
       ))}
