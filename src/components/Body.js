@@ -4,11 +4,13 @@ import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import { RES_API } from "../utils/constants";
 import useOnlineStatus from "../utils/useOnlineStatus"
+import { useNavigate } from "react-router-dom";
 
 const Body = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [filterenRestaurests, setFilterenRestaurests] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -26,6 +28,9 @@ const Body = () => {
         data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
           ?.restaurants
       );
+      console.log(data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants);
+      
     } catch (error) {
       console.error(error);
     }
@@ -44,6 +49,10 @@ const Body = () => {
     );
     setFilterenRestaurests(filterenRes);
   };
+
+  const handleClick = (resId) => {
+    navigate(`/restaurant/${resId}`)
+  }
 
   const RestaurantCardWithVeg = withVegRestaurantCard(RestaurantCard);
   const onlineStatus = useOnlineStatus();
@@ -84,8 +93,7 @@ const Body = () => {
       <div className="flex flex-wrap">
         {filterenRestaurests &&
           filterenRestaurests.map((data) => (
-            <div key={data.info.id}>
-              <Link to={"/restaurant/" + data.info.id}>
+            <div key={data.info.id} onClick={() => handleClick(data.info.id)}>
                 {data.info.veg ? (
                   <RestaurantCardWithVeg
                     name={data.info.name}
@@ -93,7 +101,8 @@ const Body = () => {
                     cuisines={data.info.cuisines}
                     rating={data.info.avgRating}
                     cost={data.info.costForTwo}
-                    time={data.info.sla.deliveryTime}
+                    time={data.info.sla.slaString}
+                    areaName={data.info.areaName}
                   />
                 ) : (
                   <RestaurantCard
@@ -102,10 +111,10 @@ const Body = () => {
                     cuisines={data.info.cuisines}
                     rating={data.info.avgRating}
                     cost={data.info.costForTwo}
-                    time={data.info.sla.deliveryTime}
+                    time={data.info.sla.slaString}
+                    areaName={data.info.areaName}
                   />
                 )}
-              </Link>
             </div>
           ))}
       </div>
