@@ -5,10 +5,12 @@ import { Link } from "react-router-dom";
 import { RES_API } from "../utils/constants";
 import useOnlineStatus from "../utils/useOnlineStatus"
 import { useNavigate } from "react-router-dom";
+import HeaderItems from "./HeaderItems";
 
 const Body = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [filterenRestaurests, setFilterenRestaurests] = useState([]);
+  const [headerItemsData, setHeaderItemsData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
 
@@ -28,8 +30,10 @@ const Body = () => {
         data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
           ?.restaurants
       );
-      console.log(data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
-        ?.restaurants);
+      setHeaderItemsData( 
+        data?.data?.cards[0]?.card?.card?.gridElements?.infoWithStyle
+        ?.info
+      );
       
     } catch (error) {
       console.error(error);
@@ -66,7 +70,7 @@ const Body = () => {
   }
 
   return (
-    <div className="p-2">
+    <div className="max-w-7xl mx-auto  p-2">
       <div className="my-4 px-3 flex justify-between">
         <div className="flex space-x-3">
           <input
@@ -90,33 +94,41 @@ const Body = () => {
           Top Rated Restaurants
         </button>
       </div>
-      <div className="flex flex-wrap">
-        {filterenRestaurests &&
-          filterenRestaurests.map((data) => (
-            <div key={data.info.id} onClick={() => handleClick(data.info.id)}>
-                {data.info.veg ? (
-                  <RestaurantCardWithVeg
-                    name={data.info.name}
-                    imgId={data.info.cloudinaryImageId}
-                    cuisines={data.info.cuisines}
-                    rating={data.info.avgRating}
-                    cost={data.info.costForTwo}
-                    time={data.info.sla.slaString}
-                    areaName={data.info.areaName}
-                  />
-                ) : (
-                  <RestaurantCard
-                    name={data.info.name}
-                    imgId={data.info.cloudinaryImageId}
-                    cuisines={data.info.cuisines}
-                    rating={data.info.avgRating}
-                    cost={data.info.costForTwo}
-                    time={data.info.sla.slaString}
-                    areaName={data.info.areaName}
-                  />
-                )}
-            </div>
-          ))}
+      <div className="p-2">
+        <h1 className="font-bold text-2xl p-2 my-2">What's on your mind?</h1>
+        <HeaderItems items={headerItemsData} />
+      </div>
+      <hr className="mx-3 h-px my-8 bg-gray-400 border-0" />
+      <div>
+        <h1 className="font-bold text-2xl p-2 my-2">Restaurants with online food delivery</h1>
+        <div className="flex flex-wrap">
+          {filterenRestaurests &&
+            filterenRestaurests.map((data) => (
+              <div key={data.info.id} onClick={() => handleClick(data.info.id)}>
+                  {data.info.veg ? (
+                    <RestaurantCardWithVeg
+                      name={data.info.name}
+                      imgId={data.info.cloudinaryImageId}
+                      cuisines={data.info.cuisines}
+                      rating={data.info.avgRating}
+                      cost={data.info.costForTwo}
+                      time={data.info.sla.slaString}
+                      areaName={data.info.areaName}
+                    />
+                  ) : (
+                    <RestaurantCard
+                      name={data.info.name}
+                      imgId={data.info.cloudinaryImageId}
+                      cuisines={data.info.cuisines}
+                      rating={data.info.avgRating}
+                      cost={data.info.costForTwo}
+                      time={data.info.sla.slaString}
+                      areaName={data.info.areaName}
+                    />
+                  )}
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );
